@@ -244,19 +244,36 @@ jQuery(window).load(function() {
 			    mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 			var map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);
+
+			var myloc = new google.maps.Marker({
+			    position: latlng,
+			    clickable: false,
+			    icon: { url: 'images/mobileimgs2.png',
+				    size: new google.maps.Size(22,22),
+				    origin: new google.maps.Point(0,18),
+				    anchor: new google.maps.Point(11,11)},
+			    shadow: null,
+			    zIndex: 999,
+			    map: map
+			});
+
 			// Add an overlay to the map of current lat/lng
 			$("#results").text("Loading results...");
 			$.ajax({
 			    type: 'GET',
-			    url: "api.php?lat="+latitude+"&lng="+longiture+"&limit="+limit,
+			    url: "api.php?lat="+latlng.lat()+"&lng="+latlng.lng()+"&limit="+limit,
 			    contentType: "application/json",
 			    success: function(results){
 				$.each(results.establishments, function(i,obj){
+					var rating = parseInt(obj.RatingValue);
 					var position = new google.maps.LatLng(obj.geocode.latitude, obj.geocode.longitude);
 					var marker = new google.maps.Marker({
 					    position: position,
 					    map: map,
-					    title: obj.RatingValue
+					    title: obj.RatingValue,
+					    icon: {url: 'images/number_'+rating+'.png'},
+					    shadow: null,
+					    zIndex: 999
 					});
 				
 				});
