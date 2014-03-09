@@ -257,6 +257,7 @@ jQuery(window).load(function() {
 			    map: map
 			});
 
+			var infowindow = new google.maps.InfoWindow();
 			// Add an overlay to the map of current lat/lng
 			$("#results").text("Loading results...");
 			$.ajax({
@@ -274,6 +275,10 @@ jQuery(window).load(function() {
 					    icon: {url: 'images/number_'+rating+'.png'},
 					    shadow: null,
 					    zIndex: 999
+					});
+					google.maps.event.addListener(marker, 'click', function() {
+					   infowindow.setContent("<b>"+obj.BusinessName+"</b><br/><em>"+obj.BusinessType+"</em><br/><a href='tel:"+obj.Phone+"'>"+obj.Phone+"</a>");
+					   infowindow.open(map,marker);
 					});
 				
 				});
